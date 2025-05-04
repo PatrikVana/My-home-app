@@ -1,0 +1,35 @@
+.task-detail {
+    width: 30%; /* Zabírá 30% rodičovského prostoru */
+    max-width: 400px;
+    height: 95vh; /* Zabere celou výšku */
+    background: white;
+    box-shadow: -2px 0px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: width 0.3s ease-in-out, opacity 0.3s ease-in-out;
+    opacity: 0;
+  }
+  
+  .task-detail.open {
+    opacity: 1; 
+  }
+  
+  .close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .task-detail h2 {
+    margin-top: 20px;
+  }
+  
+  .task-detail form {
+    width: 100%;
+  }
+  

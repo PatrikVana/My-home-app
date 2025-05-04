@@ -1,0 +1,136 @@
+.registration-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100vh;
+
+}
+
+.registration-back-button{
+    position: fixed;
+    left: 40px;
+    top: 40px;
+    border-radius: 50%;
+    background-color: #578e7e77;
+    border: none;
+    width: 4rem;
+    height: 4rem;
+    transition: background-color .4s, box-shadow .4s;
+
+}
+
+.registration-back-button:hover{
+    background-color: #578E7E;
+    box-shadow: 0px 6px 6px #578e7eb5;
+}
+
+.back-button-arrow{
+    font-size: 2rem;
+    color: white;
+}
+
+.registration-header{
+    margin-bottom: 3rem;
+}
+
+.registration-form{
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    width: 25rem;
+    justify-content: center;
+}
+
+.registration-input-box{
+
+    height: 70px;
+}
+
+.registration-input-box input:focus + .registration-icon {
+    color: #578e7ed0;
+}
+
+.registration-form-input{
+    width: 100%;
+    border: 2px solid transparent;
+    padding: 1rem;
+    border-radius: 1rem;
+    background-color: rgb(235 235 235 / 50%);
+    transition: background-color 0.3s ease-in-out, border 0.3s ease-in-out;
+
+}
+
+.registration-form-input option {
+    background-color: rgb(235 235 235 / 50%);
+    border-radius: 0 10px 10px 0;
+}
+
+
+.registration-form-input:focus {
+    border: 2px solid #578E7E !important;
+    outline: none;
+}
+
+.registration-form-input:hover{
+    background-color: rgba(235, 235, 235, 0.335);
+    border: 2px solid rgba(118, 117, 117, 0.35);;
+}
+
+.registration-icon{
+    position: relative;
+    display: flex;
+    align-items: center; /* ✅ Zajistí správné vertikální zarovnání */
+    width: 100%;
+    left: 360px;
+    bottom: 48px;
+    font-size: 1.5rem;
+    color: rgba(0, 0, 0, 0.455);
+    transition: color 0.3s ease-in-out;
+}
+
+.registration-form-button{
+    border: 0;
+    padding: 1rem 1.5rem;
+    margin-top: 1.6rem;
+    border-radius: 2rem;
+    background-color: #578e7ed0;
+    color: white;
+    transition: background-color .4s, box-shadow .4s;
+
+}
+
+.registration-form-button:hover{
+    background-color: #578E7E;
+    box-shadow: 0px 6px 6px #578e7eb5;
+}
+
+p{
+    display: inline-block;
+    margin: 0;
+    font-size: 1.2rem;
+}
+
+.registration-link-box{
+    text-align: center;
+    margin-top: 1rem;
+}
+
+.registration-link-description{
+    color: rgba(159, 158, 158, 0.694);
+}
+
+.registration-link-to-registration {
+    text-decoration: underline;
+    color: #578e7eb4;
+    transition: color 0.3s ease-in-out;
+    
+}
+
+.registration-link-to-registration:hover{
+    color: #578E7E;
+}
+
+.registration-link-to-landingpage{
+    text-decoration: none;
+}

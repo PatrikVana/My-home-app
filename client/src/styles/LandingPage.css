@@ -1,0 +1,40 @@
+.landing-menu {
+    display: flex;
+    align-items: center;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    gap: 10px;
+    
+}
+
+.landing-header{
+    background-color: #3D3D3D;
+    height: 70px;
+    display: flex;
+    justify-content: right;
+    padding: 0 10px 0 10px;
+    
+}
+.link{
+    text-decoration: none;
+}
+
+.landing-menu-button{
+    background-color: #578E7E;
+    color: white;
+    text-decoration: none;
+    border-radius: 10px;
+    padding: 10px;
+    margin: 0;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.landing-menu-button:hover {
+    background-color: rgba(255, 255, 255, 0.699);
+   
+    color: black;
+  
+}
+

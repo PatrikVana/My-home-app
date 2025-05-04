@@ -1,0 +1,100 @@
+.note-list-container {
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap;
+    padding-top: 5px;
+    padding-left: 50px;
+    max-height: 580px;
+    overflow-y: auto;
+    width: 100%;
+}
+
+.note-card {
+    background: white;
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0px 4px 10px rgba(133, 129, 129, 0.1);
+    border: 2px solid rgba(56, 56, 56, 0.085);
+    font-size: 16px;
+    font-weight: 500;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    width: 210px;
+    height: 250px;
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.note-card:last-child {
+    margin-bottom: 0;
+}
+
+.note-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0px 6px 8px rgba(135, 135, 135, 0.232);
+}
+
+.note-color {
+    position: absolute;
+    right: 18px;
+    width: 30px;
+    height: 30px;
+    border: 1px rgba(136, 136, 136, 0.524) solid;
+    border-radius: 10px;
+}
+
+.note-header {
+    font-size: 1.3rem;
+    margin: 0;
+}
+
+.note-text {
+    font-size: 1rem;
+    color: #888;
+    margin: 0.8rem 0 0 0;
+}
+
+/* stylizace datumu založení poznámky v seznamu poznámek */
+
+.note-date {
+    font-size: 0.6rem;
+    color: rgb(161, 161, 161);
+    margin: 0 0 0.5rem 0;
+}
+
+.note-control-panel {
+    margin-top: auto;
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.note-delete-btn {
+    font-weight: bold;
+    background: transparent;
+    border: none;
+    font-size: 2rem;
+    color: rgb(161, 161, 161);
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.note-delete-btn:hover {
+    color: rgb(255, 0, 0);
+}
+
+
+.note-edit-btn {
+    font-weight: bold;
+    background: transparent;
+    font-size: 1.6rem;
+    color: rgb(161, 161, 161);
+    border: none;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.note-edit-btn:hover {
+    color: #578E7E;
+}

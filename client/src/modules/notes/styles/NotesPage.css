@@ -1,0 +1,99 @@
+
+  .notes-page {
+    display: flex;
+    gap: 5%;
+    width: 100%;
+    padding-left: 10px;
+    padding-top: 10px;
+  }
+  
+  .main-content {
+    display: flex;
+    flex-grow: 1;
+  }
+  
+  .note-container {
+    display: flex;
+    flex-grow: 1;
+    justify-content: center;
+    transition: width 0.3s ease-in-out;
+
+  }
+  
+  .note-list {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding : 10px 0 10px 0;
+  }
+  
+  .note-list-main {
+    min-width: 400px;
+
+  }
+  
+  .note-list.shrink {
+    width: 70%;
+  }
+  
+  .note-detail {
+    width: 30%;
+    max-width: 400px;
+    background: white;
+    box-shadow: -2px 0px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    transition: transform 0.3s ease-in-out;
+  }
+
+  .btn-group {
+    position: fixed;
+    right: 40px;
+    top : 20px;
+  }
+  
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+  }
+  
+  .modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: none;
+    padding: 20px;
+    border-radius: 8px;
+    z-index: 1000;
+  }
+
+
+  .add-note-button{
+    position: fixed;
+    right: 40px;
+    bottom: 40px;
+    border-radius: 50%;
+    background-color: #578e7e77;
+    border: none;
+    width: 4rem;
+    height: 4rem;
+    transition: background-color .4s, box-shadow .4s;
+    z-index: 9999;
+
+}
+
+.add-note-button:hover{
+  background-color: #578E7E;
+  box-shadow: 0px 6px 6px #578e7eb5;
+}
+
+.ri-add-line {
+  font-size: 40px;
+  color: white;
+}
+  

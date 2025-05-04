@@ -1,0 +1,53 @@
+html, body {
+  overflow: hidden;
+}
+
+.app-background {
+  position: fixed; 
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-size: cover; 
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: -1; 
+  background-position: 300px 0px;
+
+}
+
+.content{
+  width: 100%;
+
+}.container {
+  width: 100%;
+  margin: 0 auto;
+  padding: 10px;
+
+}
+
+ .form-control{
+  border: none !important;
+  padding: 0 !important;
+  font-size: 1.2rem !important;
+  
+ }
+
+ .form-control:focus{
+  box-shadow: none !important;
+ }
+
+.fade-in {
+  opacity: 0;
+  animation: fadeIn 0.2s ease-in forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
