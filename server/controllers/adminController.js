@@ -10,7 +10,7 @@ import {
   sendRejectEmail
 } from "../services/emailService.js";
 
-// ✅ Získání neschválených registrací
+// Získání čekajících registrací na schválení
 export const getPendingRegistrations = async (req, res) => {
   try {
     const pendingUsers = await User.find({ approved: false });
@@ -20,7 +20,7 @@ export const getPendingRegistrations = async (req, res) => {
   }
 };
 
-// ✅ Schválení registrace uživatele
+// Schválení registrace nového uživatele
 export const approveUser = async (req, res) => {
   try {
     const user = await User.findByIdAndUpdate(req.params.id, { approved: true }, { new: true });
@@ -32,7 +32,7 @@ export const approveUser = async (req, res) => {
   }
 };
 
-// ✅ Zamítnutí registrace uživatele
+// Zamítnutí registrace uživatele
 export const rejectUser = async (req, res) => {
   try {
     const user = await User.findByIdAndDelete(req.params.id);
@@ -44,7 +44,7 @@ export const rejectUser = async (req, res) => {
   }
 };
 
-// ✅ Získání všech uživatelů
+// Získání všech uživatelů
 export const getUsers = async (req, res) => {
   try {
     const users = await User.find();
@@ -54,7 +54,7 @@ export const getUsers = async (req, res) => {
   }
 };
 
-// ✅ Změna role uživatele
+// Změna role uživatele
 export const changeUserRole = async (req, res) => {
   try {
     const { role } = req.body;
@@ -76,7 +76,7 @@ export const changeUserRole = async (req, res) => {
   }
 };
 
-// ✅ Správa oprávnění uživatele
+// Správa oprávnění uživatele
 export const updateUserPermissions = async (req, res) => {
   try {
     const user = await User.findByIdAndUpdate(req.params.id, { permissions: req.body.permissions }, { new: true });
@@ -87,7 +87,7 @@ export const updateUserPermissions = async (req, res) => {
   }
 };
 
-// ✅ Změna přístupu uživatele k modulům
+// změna přístupu uživatele k modulům (úkoly, poznámky)
 export const updateUserAccess = async (req, res) => {
   try {
     const updates = req.body; // např. { todo: true, notes: false }
@@ -116,7 +116,7 @@ export const updateUserAccess = async (req, res) => {
   }
 };
 
-// ✅ Aktivace/deaktivace účtu uživatele
+// Aktivace/blokování účtu uživatele
 export const updateUserStatus = async (req, res) => {
   try {
     const { id } = req.params;
@@ -142,7 +142,7 @@ export const updateUserStatus = async (req, res) => {
   }
 };
 
-// ✅ Mazání uživatele a jeho dat
+// Smazání uživatele a jeho dat
 export const deleteUser = async (req, res) => {
   try {
     const userId = new mongoose.Types.ObjectId(req.params.id);

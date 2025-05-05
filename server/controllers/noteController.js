@@ -2,11 +2,11 @@ import mongoose from 'mongoose';
 import Note from '../models/Note.js';
 import { noteSchema } from '../validation/noteValidation.js';
 
-// Get Notes (filtered by group and completion status)
+// Získání Poznámek
 export const getNotes = async (req, res) => {
     try {
-        console.log("🔹 Přihlášený uživatel:", req.user); // ✅ Logujeme přihlášeného uživatele
-
+        console.log("🔹 Přihlášený uživatel:", req.user); //Log přihlášeného uživatele
+        // Kontrola oprávnění k poznámkovému modulu
         if (!req.user.permissions?.notes) {
             return res.status(403).json({ message: "Nemáte oprávnění pro přístup k Note modulu" });
         }
@@ -25,7 +25,7 @@ export const getNotes = async (req, res) => {
 
 
 
-// Add Note (with group & completed support)
+// Přidání Poznámky
 export const addNewNote = async (req, res) => {
 
     const { error } = noteSchema.validate(req.body);
@@ -34,12 +34,13 @@ export const addNewNote = async (req, res) => {
     }
 
     try {
+        // Kontrola oprávnění k poznámkovému modulu
         if (!req.user.permissions?.notes) {
             return res.status(403).json({ message: "Nemáte oprávnění přidávat poznámku" });
         }
 
         const { header, text, color, group, task } = req.body;
-
+        // Log nové poznámky
         console.log("🟡 Nová poznámka přijata:", { header, text, color, group, task });
 
         const newNote = new Note({
@@ -50,7 +51,7 @@ export const addNewNote = async (req, res) => {
             userId: req.user.id,
             task: task || null
         });
-
+        // Uložení poznámky
         await newNote.save();
 
         console.log("🟢 Poznámka uložena:", newNote);
@@ -63,7 +64,7 @@ export const addNewNote = async (req, res) => {
 };
 
 
-// Update Note (mark as completed or edit)
+// Updatování poznámky
 export const updateNote = async (req, res) => {
 
     const { error } = noteSchema.validate(req.body);
@@ -72,6 +73,7 @@ export const updateNote = async (req, res) => {
     }
 
     try {
+        // Kontrola oprávnění k poznámkovému modulu
         if (!req.user.permissions?.notes) {
             return res.status(403).json({ message: "Nemáte oprávnění upravovat poznámky" });
         }
@@ -84,10 +86,10 @@ export const updateNote = async (req, res) => {
             ...(color && { color }),
         };
 
-        // 💡 Podmíněně přidej group/task
+        // Podmíné přidání group/task
         if (group !== undefined) updateFields.group = group;
         if (task !== undefined) updateFields.task = task;
-
+        //Updatetování poznámky
         const updatedNote = await Note.findByIdAndUpdate(req.params.id, updateFields, { new: true });
 
         if (!updatedNote) {
@@ -103,17 +105,18 @@ export const updateNote = async (req, res) => {
 
 
 
-// Delete Note
+// Odstranění poznámky
 export const deleteNote = async (req, res) => {
     try {
+        // Kontrola oprávnění k poznámkovému modulu
         if (!req.user.permissions?.notes) {
             return res.status(403).json({ message: "Nemáte oprávnění mazat poznámku" });
         }
-
+        // Kontrola id poznámky
         if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
             return res.status(400).json({ error: 'Invalid note ID' });
         }
-
+        // odstranění poznámky
         const deletedNote = await Note.findByIdAndDelete(req.params.id);
 
         if (!deletedNote) {

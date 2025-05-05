@@ -6,7 +6,7 @@ import {
   sendRegistrationEmail
 } from "../services/emailService.js";
 
-// Registrace uživatele (username zůstává hlavním identifikátorem)
+// Registrace uživatele
 export const registerUser = async (req, res) => {
 
   const { error } = registrationSchema.validate(req.body);
@@ -34,7 +34,7 @@ export const registerUser = async (req, res) => {
       username,
       email,
       password: hashedPassword,
-      gender: gender || null, // ✅ Pokud gender není vyplněn, bude `null`
+      gender: gender || null, // Pokud gender není vyplněn, bude null
       role: "user",
       approved: false,
       active: true,
@@ -53,19 +53,19 @@ export const registerUser = async (req, res) => {
   }
 };
 
-// ✅ Přihlášení uživatele pomocí `username`
+// Přihlášení uživatele
 export const loginUser = async (req, res) => {
 
   const { error } = loginSchema.validate(req.body);
   if (error) {
     return res.status(400).json({ error: error.details[0].message });
   }
-
+  // Přihlášení pomocí username a password
   const { username, password } = req.body;
   console.log('📢 Login request received:', req.body);
 
   try {
-    // ✅ Hledání uživatele podle `username`
+    // Hledání uživatele podle username
     const user = await User.findOne({ username });
     if (!user) {
       return res.status(400).json({ message: 'Neplatné přihlašovací údaje' });
@@ -75,7 +75,7 @@ export const loginUser = async (req, res) => {
       return res.status(403).json({ message: 'Účet nebyl schválen administrátorem' });
     }
 
-    // ✅ Blokace přihlášení, pokud je účet pozastavený (active: false)
+    // Blokace přihlášení, pokud je účet pozastavený (active: false)
     if (!user.active) {
       console.log("❌ Pokus o přihlášení pozastaveného účtu:", username);
       return res.status(403).json({ message: "Účet byl pozastaven. Kontaktujte správce." });
@@ -99,7 +99,7 @@ export const loginUser = async (req, res) => {
   }
 };
 
-// ✅ Endpoint pro získání dat přihlášeného uživatele
+// Získání dat přihlášeného uživatele
 export const getUserProfile = async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select("-password");
