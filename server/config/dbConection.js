@@ -4,10 +4,10 @@ import mongoose from "mongoose";
 export const connectDB = async () => {
     try {
         await mongoose.connect(process.env.MONGO_URI);
-        console.log("✅ Připojeno k MongoDB!");
+        console.log("Připojeno k MongoDB!");
 
     } catch (error) {
-        console.error("❌ Chyba připojení k databázi:", error);
+        console.error("Chyba připojení k databázi:", error);
         process.exit(1);
     }
 };

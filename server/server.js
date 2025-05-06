@@ -19,7 +19,6 @@ app.use(express.json());
 import authRoutes from "./routes/auth.js";
 import todoRoutes from "./routes/todo.js";
 import noteRoutes from './routes/note.js';
-
 import taskGroupRoutes from "./routes/taskGroups.js";
 import noteGroupRoutes from './routes/noteGroups.js';
 import adminRoutes from "./routes/admin.js";
