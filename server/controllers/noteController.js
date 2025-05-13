@@ -5,27 +5,29 @@ import { noteSchema } from '../validation/noteValidation.js';
 // Získání Poznámek
 export const getNotes = async (req, res) => {
     try {
-        console.log("🔹 Přihlášený uživatel:", req.user); //Log přihlášeného uživatele
-        // Kontrola oprávnění k poznámkovému modulu
+        // Kontrola zda má uživatel oprávnění používat modul poznámek
         if (!req.user.permissions?.notes) {
             return res.status(403).json({ message: "Nemáte oprávnění pro přístup k Note modulu" });
         }
-
+        // načtení hodnoty group z requestu
         const { group } = req.query;
+        // vytvoření objektu filter, doplnění hodnoty userId
         const filter = { userId: req.user.id };
-
+        // Pokud hodnota group existuje a není nastavená na default vložím hodnotu group z requestu do objektu filter
         if (group && group !== "default") filter.group = group;
-
+        // načtení všech poznámek podle objektu filter, tedy userId a group
         const notes = await Note.find(filter);
+        //vracím úspěšnou odpověď s kódem 200 a poznámkami ve formátu json
         res.status(200).json(notes);
     } catch (error) {
+        //vracím neúspěšnou odpověď s kódem 500 a zprávou ve formátu json
         res.status(500).json({ error: 'Something went wrong' });
     }
 };
 
 
 
-// Přidání Poznámky
+// Přidání nové poznámky
 export const addNewNote = async (req, res) => {
 
     const { error } = noteSchema.validate(req.body);
@@ -34,15 +36,13 @@ export const addNewNote = async (req, res) => {
     }
 
     try {
-        // Kontrola oprávnění k poznámkovému modulu
+        // Kontrola zda má uživatel oprávnění používat modul poznámek
         if (!req.user.permissions?.notes) {
             return res.status(403).json({ message: "Nemáte oprávnění přidávat poznámku" });
         }
-
+        // načtení header, text, color, group, task hodnot z requestu
         const { header, text, color, group, task } = req.body;
-        // Log nové poznámky
-        console.log("🟡 Nová poznámka přijata:", { header, text, color, group, task });
-
+        //vytvoření nového objektu poznámky, vložím do něj načtené hodnoty z requestu (group pokud není = default, task pokud není = null)
         const newNote = new Note({
             header,
             text,
@@ -51,14 +51,12 @@ export const addNewNote = async (req, res) => {
             userId: req.user.id,
             task: task || null
         });
-        // Uložení poznámky
+        // Uložení nové poznámky
         await newNote.save();
-
-        console.log("🟢 Poznámka uložena:", newNote);
-
+        //vracím úspěšnou odpověď s kódem 201 a aktualizovanou poznámkami ve formátu json
         res.status(201).json(newNote);
     } catch (error) {
-        console.error("❌ Chyba při ukládání poznámky:", error);
+        console.error("Chyba při ukládání poznámky:", error);
         res.status(500).json({ error: error.message || 'Something went wrong' });
     }
 };
@@ -98,7 +96,7 @@ export const updateNote = async (req, res) => {
 
         res.json(updatedNote);
     } catch (error) {
-        console.error("❌ Chyba při aktualizaci poznámky:", error);
+        console.error("Chyba při aktualizaci poznámky:", error);
         res.status(500).json({ error: "Something went wrong" });
     }
 };
