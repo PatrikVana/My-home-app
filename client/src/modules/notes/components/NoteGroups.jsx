@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addNoteGroup, deleteNoteGroup, fetchNotes } from "../../../store/notes/notesSlice";
 import { addNotification } from "../../../store/notifications/notificationsSlice";
-import { groupSchema } from "../../../validation/schemas"; // ✅ validace názvu skupiny
+import { groupSchema } from "../../../validation/schemas"; 
 import "../styles/NoteGroups.css";
 
 const NoteGroups = ({

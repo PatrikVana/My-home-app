@@ -1,7 +1,7 @@
 .note-detail {
-    width: 30%; /* Zabírá 30% rodičovského prostoru */
+    width: 30%; 
     max-width: 400px;
-    height: 95vh; /* Zabere celou výšku */
+    height: 95vh; 
     background: white;
     box-shadow: -2px 0px 10px rgba(0, 0, 0, 0.1);
     padding: 20px;
@@ -13,7 +13,7 @@
   }
   
   .note-detail.open {
-    opacity: 1; /* Když je otevřený */
+    opacity: 1;
   }
   
   .close-btn {

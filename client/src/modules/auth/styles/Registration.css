@@ -80,7 +80,7 @@
 .registration-icon{
     position: relative;
     display: flex;
-    align-items: center; /* ✅ Zajistí správné vertikální zarovnání */
+    align-items: center; 
     width: 100%;
     left: 360px;
     bottom: 48px;

@@ -1,19 +1,19 @@
-const API_URL = 'http://localhost:5000/api'; // URL backendu
+const API_URL = 'http://localhost:5000/api'; 
 
 
 
-// Získání úkolů (chráněná routa)
+// Získání všech úkolů
 export const getTodos = async (group = "default", completed = false) => {
     const token = localStorage.getItem("token");
     if (!token) {
-        throw new Error("No token found. User might not be logged in.");
+        throw new Error("Token nenalezen, uživatel asi není přihlášen");
     }
 
     try {
-        // ✅ Ověříme, zda parametry nejsou prázdné
+        // Ověření zda parametry nejsou prázdné
         const queryParams = new URLSearchParams();
         if (group && group !== "default") queryParams.append("group", group);
-        queryParams.append("completed", completed.toString()); // ✅ Opraveno
+        queryParams.append("completed", completed.toString());
 
         const response = await fetch(`${API_URL}/todo?${queryParams.toString()}`, {
             method: "GET",
@@ -23,22 +23,21 @@ export const getTodos = async (group = "default", completed = false) => {
         });
 
         if (!response.ok) {
-            throw new Error(`Failed to fetch todos: ${response.statusText}`);
+            throw new Error(`chyba při odchycení úkolu: ${response.statusText}`);
         }
 
         return await response.json();
     } catch (error) {
-        console.error("Error fetching todos:", error);
         throw error;
     }
 };
 
 
-// Přidání úkolu (chráněná routa)
+// Přidání nového úkolu 
 export const addTodo = async (text, priority, group = "default") => {
     const token = localStorage.getItem('token');
     if (!token) {
-        throw new Error('No token found. User might not be logged in.');
+        throw new Error('Token nenalezen, uživatel asi není přihlášen');
     }
 
     try {
@@ -52,27 +51,24 @@ export const addTodo = async (text, priority, group = "default") => {
         });
 
         if (!response.ok) {
-            throw new Error(`Failed to add todo: ${response.statusText}`);
+            throw new Error(`nepodařilo se přidat úkol: ${response.statusText}`);
         }
 
         return await response.json();
     } catch (error) {
-        console.error('Error adding todo:', error);
         throw error;
     }
 };
 
-// Smazání úkolu (chráněná routa)
+// Smazání úkolu
 export const deleteTodo = async (id) => {
     if (!id) {
-        throw new Error('Invalid task ID');
+        throw new Error('nesprávné id úkolu');
     }
-
-    console.log('Deleting task with ID:', id);
 
     const token = localStorage.getItem('token');
     if (!token) {
-        throw new Error('No token found. User might not be logged in.');
+        throw new Error('Token nenalezen, uživatel asi není přihlášen');
     }
 
     try {
@@ -84,21 +80,20 @@ export const deleteTodo = async (id) => {
         });
 
         if (!response.ok) {
-            throw new Error(`Failed to delete todo: ${response.statusText}`);
+            throw new Error(`chyba při mazání úkolu: ${response.statusText}`);
         }
 
         return await response.json();
     } catch (error) {
-        console.error('Error deleting todo:', error);
         throw error;
     }
 };
 
-// Aktualizace úkolu (chráněná routa)
+// Aktualizace úkolu
 export const updateTodo = async (id, updates) => {
     const token = localStorage.getItem('token');
     if (!token) {
-        throw new Error('No token found. User might not be logged in.');
+        throw new Error('Token nenalezen, uživatel asi není přihlášen');
     }
 
     try {
@@ -112,21 +107,20 @@ export const updateTodo = async (id, updates) => {
         });
 
         if (!response.ok) {
-            throw new Error(`Failed to update todo: ${response.statusText}`);
+            throw new Error(`chyba při aktualizaci úkolu: ${response.statusText}`);
         }
 
         return await response.json();
     } catch (error) {
-        console.error('Error updating todo:', error);
         throw error;
     }
 };
 
-// ✅ Přidání funkce pro získání skupin úkolů
+// získání všech skupin úkolů
 export const getTaskGroups = async () => {
     const token = localStorage.getItem('token');
     if (!token) {
-        throw new Error('No token found. User might not be logged in.');
+        throw new Error('Token nenalezen, uživatel asi není přihlášen');
     }
 
     try {
@@ -138,12 +132,11 @@ export const getTaskGroups = async () => {
         });
 
         if (!response.ok) {
-            throw new Error(`Failed to fetch task groups: ${response.statusText}`);
+            throw new Error(`chyba při odchycení skupin úkolůs: ${response.statusText}`);
         }
 
         return await response.json();
     } catch (error) {
-        console.error('Error fetching task groups:', error);
         return [];
     }
 };
@@ -167,11 +160,11 @@ export const createTaskGroup = async (name) => {
   };
   
 
-// ❌ Smazání skupiny úkolů
+// Smazání skupiny úkolů
 export const deleteTaskGroup = async (id) => {
     const token = localStorage.getItem('token');
     if (!token) {
-        throw new Error('No token found. User might not be logged in.');
+        throw new Error('Token nenalezen, uživatel asi není přihlášen');
     }
 
     try {
@@ -183,12 +176,11 @@ export const deleteTaskGroup = async (id) => {
         });
 
         if (!response.ok) {
-            throw new Error(`Failed to delete task group: ${response.statusText}`);
+            throw new Error(`chyba při odstranění skupiny úkolů: ${response.statusText}`);
         }
 
-        return await response.json(); // nebo `return id;` pokud backend nic nevrací
+        return await response.json();
     } catch (error) {
-        console.error('Error deleting task group:', error);
         throw error;
     }
 };

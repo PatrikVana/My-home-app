@@ -13,19 +13,19 @@ export function useNotes(selectedGroup, filterCompleted) {
   const [loading, setLoading] = useState(true);
   const [noteGroups, setNoteGroups] = useState([]);
 
-  // ✅ Použití useCallback, aby funkce neměnila referenci a nevyvolávala re-render
+  // Použití useCallback, aby funkce neměnila referenci a nevyvolávala re-render
   const fetchNotes = useCallback(async () => {
     try {
       setLoading(true);
       const notesFromAPI = await getNotes(selectedGroup, filterCompleted);
-      console.log("✅ Poznámky načteny:", notesFromAPI);
+      console.log("Poznámky načteny:", notesFromAPI);
       setNotes(notesFromAPI);
     } catch (error) {
-      console.error("Error fetching notes:", error);
+      console.error("error při odchycení poznámek:", error);
     } finally {
       setLoading(false);
     }
-  }, [selectedGroup, filterCompleted]); // ✅ Závislosti zajistí, že se volá jen při změně hodnot
+  }, [selectedGroup, filterCompleted]); // Závislosti zajistí, že se volá jen při změně hodnot
 
   const fetchNoteGroups = useCallback(async () => {
     try {
@@ -34,23 +34,23 @@ export function useNotes(selectedGroup, filterCompleted) {
     } catch (error) {
       console.error("Error fetching note groups:", error);
     }
-  }, []); // ✅ Fetch skupin úkolů se spustí jen jednou při prvním načtení
+  }, []); // Fetch skupin poznámek se spustí jen jednou při prvním načtení
 
   const deleteNoteGroup = async (id) => {
     try {
       await deleteNoteGroupAPI(id);
       setNoteGroups((prevNoteGroups) => prevNoteGroups.filter((noteGroup) => noteGroup._id !== id));
     } catch (error) {
-      console.error("Error deleting noteGroup:", error);
+      console.error("chyba při odstranění skupiny:", error);
     }
   };
 
   const addNote = async (noteHeader, noteText, color, group, task) => {
     try {
       await addNoteAPI(noteHeader, noteText, color, group, task);
-      await fetchNotes(); // ✅ Po přidání úkolu aktualizujeme seznam
+      await fetchNotes(); 
     } catch (error) {
-      console.error("Error adding note:", error);
+      console.error("chyba při přidání poznámky:", error);
     }
   };
 
@@ -59,7 +59,7 @@ export function useNotes(selectedGroup, filterCompleted) {
       await deleteNoteAPI(id);
       setNotes((prevNotes) => prevNotes.filter((note) => note._id !== id));
     } catch (error) {
-      console.error("Error deleting note:", error);
+      console.error("chyba při odstranění poznámky:", error);
     }
   };
 
@@ -72,11 +72,10 @@ export function useNotes(selectedGroup, filterCompleted) {
         )
       );
     } catch (error) {
-      console.error("Error updating task:", error);
+      console.error("chyba při aktualizaci poznámky:", error);
     }
   };
 
-  // ✅ `useEffect` nyní používá `fetchTasks` a `fetchTaskGroups` správně
   useEffect(() => {
     fetchNotes();
   }, [fetchNotes]);

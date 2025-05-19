@@ -3,12 +3,12 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { updateNote } from "../../../store/notes/notesSlice";
 import { addNotification } from "../../../store/notifications/notificationsSlice";
-import { noteSchema } from "../../../validation/schemas"; // ✅ import schématu
+import { noteSchema } from "../../../validation/schemas"; 
 
 const EditNoteForm = ({ note, closeModal }) => {
   const dispatch = useDispatch();
   const { tasks } = useSelector((state) => state.tasks);
-  const allNotes = useSelector((state) => state.notes.notes); // ✅ pro kontrolu duplicity
+  const allNotes = useSelector((state) => state.notes.notes); 
 
   const [noteHeader, setNoteHeader] = useState(note.header);
   const [noteText, setNoteText] = useState(note.text);

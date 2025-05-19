@@ -8,7 +8,7 @@ import { noteSchema } from "../../../validation/schemas";
 export default function NoteForm({ groups, closeModal }) {
   const dispatch = useDispatch();
   const { tasks } = useSelector((state) => state.tasks);
-  const { notes } = useSelector((state) => state.notes); // 🟡 pro kontrolu duplicity
+  const { notes } = useSelector((state) => state.notes); 
 
   const [header, setHeader] = useState("");
   const [text, setText] = useState("");
@@ -28,7 +28,6 @@ export default function NoteForm({ groups, closeModal }) {
       task: taskNote && task !== "default" ? task : undefined,
     };
 
-    // ✅ Validace přes Zod
     const result = noteSchema.safeParse(noteData);
 
     if (!result.success) {
@@ -44,7 +43,6 @@ export default function NoteForm({ groups, closeModal }) {
       return;
     }
 
-    // 🔁 Kontrola duplicity
     const alreadyExists = notes.find((n) =>
       n.header === header && (taskNote ? n.task === task : n.group === group)
     );
@@ -57,7 +55,6 @@ export default function NoteForm({ groups, closeModal }) {
       await dispatch(addNote(noteData)).unwrap();
       dispatch(addNotification("Poznámka přidána", "success"));
 
-      // Reset
       setHeader("");
       setText("");
       setColor("#ffffff");

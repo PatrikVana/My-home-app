@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 
 export function useAuth() {
-  const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("token")); // ✅ Přednastavení podle tokenu
+  const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("token")); 
   const [userRole, setUserRole] = useState(null);
   const [userPermissions, setUserPermissions] = useState(null);
 
@@ -9,7 +9,7 @@ export function useAuth() {
     try {
       const token = localStorage.getItem("token");
       if (!token) {
-        setIsLoggedIn(false); // ✅ Zajistí správný stav při odhlášení
+        setIsLoggedIn(false); 
         return;
       }
 
@@ -27,10 +27,10 @@ export function useAuth() {
 
       setUserRole(userData.role);
       setUserPermissions(userData.permissions || {});
-      setIsLoggedIn(true); // ✅ Zabrání smyčce
+      setIsLoggedIn(true); 
     } catch (error) {
       console.error("Chyba při načítání uživatele:", error);
-      setIsLoggedIn(false); // ✅ Oprava stavu při chybě
+      setIsLoggedIn(false); 
     }
   };
 
@@ -50,7 +50,6 @@ export function useAuth() {
     if (isLoggedIn) {
       fetchUserData();
     }
-  }, [isLoggedIn]); // ✅ Opravená závislost, už se nebude spouštět zbytečně
-
+  }, [isLoggedIn]); 
   return { isLoggedIn, userRole, userPermissions, handleLogin, handleLogout };
 }

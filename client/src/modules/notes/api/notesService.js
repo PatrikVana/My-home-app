@@ -1,15 +1,15 @@
-const API_URL = 'http://localhost:5000/api'; // URL backendu
+const API_URL = 'http://localhost:5000/api'; 
 
 
-// Získání úkolů (chráněná routa)
+// Získání všech poznámek
 export const getNotes = async (group = "default") => {
   const token = localStorage.getItem("token");
   if (!token) {
-    throw new Error("No token found. User might not be logged in.");
+    throw new Error("token nenalezen, uživatel možná není přihlášen");
   }
 
   try {
-    // ✅ Ověříme, zda parametry nejsou prázdné
+    // ověření jestli nejsou parametry prázdné
     const queryParams = new URLSearchParams();
     if (group && group !== "default") queryParams.append("group", group);
     
@@ -21,23 +21,22 @@ export const getNotes = async (group = "default") => {
     });
 
     if (!response.ok) {
-      throw new Error(`Failed to fetch todos: ${response.statusText}`);
+      throw new Error(`chyba při načítání poznámek: ${response.statusText}`);
     }
 
     return await response.json();
   } catch (error) {
-    console.error("Error fetching notes:", error);
+    
     throw error;
   }
 };
 
 
-// Přidání úkolu (chráněná routa)
-// notesService.js
+// Přidání poznámky
 export const addNote = async (noteData) => {
   const token = localStorage.getItem("token");
   if (!token) {
-    throw new Error("No token found. User might not be logged in.");
+    throw new Error("token nenalezen, uživatel možná není přihlášen");
   }
 
   try {
@@ -47,30 +46,29 @@ export const addNote = async (noteData) => {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify(noteData), // <--- Tady!
+      body: JSON.stringify(noteData),
     });
 
     if (!response.ok) {
-      throw new Error(`Failed to add note: ${response.statusText}`);
+      throw new Error(`nepodařilo se uložit poznámku: ${response.statusText}`);
     }
 
     return await response.json();
   } catch (error) {
-    console.error("Error adding note:", error);
     throw error;
   }
 };
 
 
-// Smazání úkolu (chráněná routa)
+// Smazání poznámky
 export const deleteNote = async (id) => {
   if (!id) {
-    throw new Error('Invalid task ID');
+    throw new Error('nesprávné id poznámky');
   }
 
   const token = localStorage.getItem('token');
   if (!token) {
-    throw new Error('No token found. User might not be logged in.');
+    throw new Error('token nenalezen, uživatel možná není přihlášen');
   }
 
   try {
@@ -82,21 +80,20 @@ export const deleteNote = async (id) => {
     });
 
     if (!response.ok) {
-      throw new Error(`Failed to delete note: ${response.statusText}`);
+      throw new Error(`Nepodařilo se odstranit poznámku: ${response.statusText}`);
     }
 
     return await response.json();
   } catch (error) {
-    console.error('Error deleting note:', error);
     throw error;
   }
 };
 
-// Aktualizace úkolu (chráněná routa)
+// Aktualizace poznámky
 export const updateNote = async (id, updates) => {
   const token = localStorage.getItem('token');
   if (!token) {
-    throw new Error('No token found. User might not be logged in.');
+    throw new Error('token nenalezen, uživatel možná není přihlášen');
   }
 
   try {
@@ -110,21 +107,20 @@ export const updateNote = async (id, updates) => {
     });
 
     if (!response.ok) {
-      throw new Error(`Failed to update note: ${response.statusText}`);
+      throw new Error(`nepodařilo se aktualizovat poznámku: ${response.statusText}`);
     }
 
     return await response.json();
   } catch (error) {
-    console.error('Error updating note:', error);
     throw error;
   }
 };
 
-// ✅ Přidání funkce pro získání skupin úkolů
+// získání skupin poznámek
 export const getNoteGroups = async () => {
   const token = localStorage.getItem('token');
   if (!token) {
-    throw new Error('No token found. User might not be logged in.');
+    throw new Error('token nenalezen, uživatel možná není přihlášen');
   }
 
   try {
@@ -136,25 +132,24 @@ export const getNoteGroups = async () => {
     });
 
     if (!response.ok) {
-      throw new Error(`Failed to fetch note groups: ${response.statusText}`);
+      throw new Error(`nepodařilo se získat skupiny poznámek: ${response.statusText}`);
     }
 
     return await response.json();
   } catch (error) {
-    console.error('Error fetching note groups:', error);
     return [];
   }
 };
 
-// Smazání group (chráněná routa)
+// Smazání skupiny poznámek
 export const deleteNoteGroup = async (id) => {
   if (!id) {
-    throw new Error('Invalid noteGroup name');
+    throw new Error('nesprávná skupina');
   }
 
   const token = localStorage.getItem('token');
   if (!token) {
-    throw new Error('No token found. User might not be logged in.');
+    throw new Error('token nenalezen, uživatel možná není přihlášen');
   }
 
   try {
@@ -166,12 +161,11 @@ export const deleteNoteGroup = async (id) => {
     });
 
     if (!response.ok) {
-      throw new Error(`Failed to delete noteGroup: ${response.statusText}`);
+      throw new Error(`nepodařilo se odstranit skupinu poznámek: ${response.statusText}`);
     }
 
     return await response.json();
   } catch (error) {
-    console.error('Error deleting note:', error);
     throw error;
   }
 };

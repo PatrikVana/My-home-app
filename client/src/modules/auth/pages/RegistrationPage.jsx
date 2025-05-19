@@ -5,7 +5,7 @@ import { addNotification } from '../../../store/notifications/notificationsSlice
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import '../styles/Registration.css';
-import { registrationSchema } from '../../../validation/schemas'; // ✅ Import validace
+import { registrationSchema } from '../../../validation/schemas'; 
 
 const Register = () => {
   const dispatch = useDispatch();

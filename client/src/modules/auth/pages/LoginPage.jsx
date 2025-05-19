@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { loginUser } from '../../../store/auth/authSlice';
 import { addNotification } from "../../../store/notifications/notificationsSlice";
 import { motion } from 'framer-motion';
-import { loginSchema } from '../../../validation/schemas'; // ✅ Import schématu z validace
+import { loginSchema } from '../../../validation/schemas'; 
 import '../styles/Login.css';
 
 const Login = () => {
@@ -31,7 +31,7 @@ const Login = () => {
   
       result.error.errors.forEach((err) => {
         const msg = err.message;
-        const key = `${err.path.join(".")}:${msg}`; // unikátní klíč
+        const key = `${err.path.join(".")}:${msg}`;
   
         if (!shown.has(key)) {
           shown.add(key);

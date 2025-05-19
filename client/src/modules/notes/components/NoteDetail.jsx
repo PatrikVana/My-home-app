@@ -10,7 +10,6 @@ const NoteDetail = ({ note, onClose }) => {
         <X size={24} />
       </button>
 
-      {/* Titulek */}
       <h2>Upravit poznámku</h2>
 
       {/* Formulář pro editaci poznámky */}
