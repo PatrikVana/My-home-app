@@ -12,7 +12,7 @@ import {
 
 /* Získání čekajících registrací na schválení, 
   try { 
-    - načtení všech neschválených uživatelů do pendingUsers,
+    - načtení všech neschválených uživatelů do pendingUsers proměné pomocí funkce find a hodnoty approved uživatele (false = neschválený),
     - vrácení pendingUsers jako JSON
   } catch (error){
     - vrácení chyby 
@@ -55,8 +55,8 @@ export const approveUser = async (req, res) => {
     - smazání uživatele podle ID,
     - načtení odstraněného uživatele do user,
     - pokud uživatel neexistuje vypsání chyby,
-    - poslání JSON odpovědi o zamítnutí registrace,
-    - poslání emailu na uživatelův email o zamítnutí registrace
+    - vrácení úspěšné odpovědi o zamítnutí registrace,
+    - po zamítnutí, poslání emailu na uživatelův email o zamítnutí registrace
   } catch (error) {
     - vrácení chyby
   }
@@ -93,7 +93,7 @@ export const getUsers = async (req, res) => {
   try {
     - získání nové role z těla requestu,
     - stanovení pole povolených hodnot,
-    - kontrola zda není získaná role mezi povolenými,
+    - kontrola zda je získaná role mezi povolenými,
     - pokud ne = vrácení chyby,
     - načtení uživatele podle ID do user,
     - pokud uživatel neexistuje = vrácení chyby,
@@ -130,10 +130,14 @@ export const changeUserRole = async (req, res) => {
 // Správa oprávnění uživatele
 export const updateUserPermissions = async (req, res) => {
   try {
+    // načtení(podle id) a aktualizování uživatele, konkrétně hodnot v permissions na ty obsažené v requstu
     const user = await User.findByIdAndUpdate(req.params.id, { permissions: req.body.permissions }, { new: true });
+    // pokud user neexistuje vracím chybnou odpověď s kódem 404, a zprávou
     if (!user) return res.status(404).json({ error: "Uživatel nenalezen" });
+    // vracím úspěšnou odpověď se zprávou a aktualizovaným uživatelem
     res.json({ message: "Oprávnění aktualizováno", user });
   } catch (error) {
+    //vracím chybnou odpověď s kódem 500 a zprávou
     res.status(500).json({ error: "Chyba při aktualizaci oprávnění" });
   }
 };
@@ -188,7 +192,6 @@ export const updateUserStatus = async (req, res) => {
 
 
   } catch (error) {
-    console.error("Chyba při změně statusu uživatele:", error);
     res.status(500).json({ error: "Chyba serveru", details: error.message });
   }
 };
@@ -197,13 +200,10 @@ export const updateUserStatus = async (req, res) => {
 export const deleteUser = async (req, res) => {
   try {
     const userId = new mongoose.Types.ObjectId(req.params.id);
-    console.log("Mažu uživatele a jeho data:", userId);
 
     const deletedTasks = await Task.deleteMany({ userId: userId });
-    console.log(`Smazáno ${deletedTasks.deletedCount} úkolů.`);
 
     const deletedGroups = await TaskGroup.deleteMany({ owner: userId });
-    console.log(`Smazáno ${deletedGroups.deletedCount} skupin úkolů.`);
 
     const user = await User.findByIdAndDelete(userId);
     if (!user) {
@@ -211,12 +211,10 @@ export const deleteUser = async (req, res) => {
       return res.status(404).json({ error: "Uživatel nenalezen" });
     }
 
-    console.log("Uživatel úspěšně smazán.");
     res.json({ message: "Uživatel a jeho data úspěšně odstraněny." });
     await sendDeleteEmail(user.email);
 
   } catch (error) {
-    console.error("Chyba při mazání uživatele:", error);
     res.status(500).json({ error: "Chyba při mazání uživatele", details: error.message });
   }
 };

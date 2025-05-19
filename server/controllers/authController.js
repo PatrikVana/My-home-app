@@ -16,15 +16,9 @@ export const registerUser = async (req, res) => {
 
   const { username, email, password, gender } = req.body;
 
-  console.log("🔍 Debug před ukládáním:");
-  console.log("🔍 Username:", username);
-  console.log("🔍 Email:", email);
-  console.log("🔍 Password:", password ? "******" : "EMPTY");
-  console.log("🔍 Gender:", gender);
-
   try {
     if (!username || !email || !password) {
-      console.log("❌ Chybí povinné pole!", { username, email, password });
+      console.log("Chybí povinné pole!", { username, email, password });
       return res.status(400).json({ message: 'Všechna pole jsou povinná!' });
     }
 
@@ -34,21 +28,18 @@ export const registerUser = async (req, res) => {
       username,
       email,
       password: hashedPassword,
-      gender: gender || null, // Pokud gender není vyplněn, bude null
+      gender: gender || null, 
       role: "user",
       approved: false,
       active: true,
     });
 
-    console.log("✅ Uživatel před uložením do DB:", newUser);
-
     await newUser.save();
-    console.log('✅ Registrace úspěšná:', newUser);
 
     res.status(201).json({ message: 'Registrace proběhla úspěšně!' });
+
     await sendRegistrationEmail(newUser.email);
   } catch (error) {
-    console.error('❌ Chyba v registraci:', error);
     res.status(500).json({ error: 'Interní chyba serveru' });
   }
 };
@@ -62,13 +53,12 @@ export const loginUser = async (req, res) => {
   }
   // Přihlášení pomocí username a password
   const { username, password } = req.body;
-  console.log('📢 Login request received:', req.body);
 
   try {
     // Hledání uživatele podle username
     const user = await User.findOne({ username });
     if (!user) {
-      return res.status(400).json({ message: 'Neplatné přihlašovací údaje' });
+      return res.status(400).json({ message: 'Neplatné přihlašovací jméno' });
     }
 
     if (!user.approved) {
@@ -77,13 +67,12 @@ export const loginUser = async (req, res) => {
 
     // Blokace přihlášení, pokud je účet pozastavený (active: false)
     if (!user.active) {
-      console.log("❌ Pokus o přihlášení pozastaveného účtu:", username);
       return res.status(403).json({ message: "Účet byl pozastaven. Kontaktujte správce." });
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
-      return res.status(400).json({ message: 'Neplatné přihlašovací údaje' });
+      return res.status(400).json({ message: 'Neplatné přihlašovací heslo' });
     }
 
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
@@ -94,7 +83,6 @@ export const loginUser = async (req, res) => {
       permissions: user.permissions
     });
   } catch (error) {
-    console.error("❌ Chyba při přihlášení:", error);
     res.status(500).json({ error: 'Interní chyba serveru' });
   }
 };

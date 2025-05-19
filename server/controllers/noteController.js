@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 import Note from '../models/Note.js';
 import { noteSchema } from '../validation/noteValidation.js';
 
-// Získání Poznámek
+// Získání všech Poznámek
 export const getNotes = async (req, res) => {
     try {
         // Kontrola zda má uživatel oprávnění používat modul poznámek
@@ -21,7 +21,7 @@ export const getNotes = async (req, res) => {
         res.status(200).json(notes);
     } catch (error) {
         //vracím neúspěšnou odpověď s kódem 500 a zprávou ve formátu json
-        res.status(500).json({ error: 'Something went wrong' });
+        res.status(500).json({ error: error.message || 'Něco se pokazilo' });
     }
 };
 
@@ -29,9 +29,10 @@ export const getNotes = async (req, res) => {
 
 // Přidání nové poznámky
 export const addNewNote = async (req, res) => {
-
+    // validace vstupních dat pomocí note schematu, načtení erroru v případě chyby.
     const { error } = noteSchema.validate(req.body);
     if (error) {
+        // vrácení neúspěšné odpovědi s kódem 400 se zprávou s errorem
         return res.status(400).json({ message: error.details[0].message });
     }
 
@@ -56,48 +57,51 @@ export const addNewNote = async (req, res) => {
         //vracím úspěšnou odpověď s kódem 201 a aktualizovanou poznámkami ve formátu json
         res.status(201).json(newNote);
     } catch (error) {
-        console.error("Chyba při ukládání poznámky:", error);
-        res.status(500).json({ error: error.message || 'Something went wrong' });
+        //vracím neúspěšnou odpověď s kódem 500 se zprávou ve formátu json
+        res.status(500).json({ error: error.message || 'Něco se pokazilo' });
     }
 };
 
 
 // Updatování poznámky
 export const updateNote = async (req, res) => {
-
+    // validace vstupních dat pomocí note schematu, načtení erroru v případě chyby.
     const { error } = noteSchema.validate(req.body);
     if (error) {
+        // vrácení neúspěšné odpovědi s kódem 400 se zprávou s errorem
         return res.status(400).json({ message: error.details[0].message });
     }
 
     try {
-        // Kontrola oprávnění k poznámkovému modulu
+        // Kontrola zda má uživatel oprávnění používat modul poznámek
         if (!req.user.permissions?.notes) {
+            // vrácení neúspěšné odpovědi s kódem 403 se zprávou
             return res.status(403).json({ message: "Nemáte oprávnění upravovat poznámky" });
         }
-
+        // načtení header, text, color, group, task hodnot z requestu pro aktualizci poznámky
         const { header, text, color, group, task } = req.body;
-
+        //vytvoření nového objektu poznámky, vložím do něj načtené hodnoty z requestu
         const updateFields = {
             ...(header && { header }),
             ...(text && { text }),
             ...(color && { color }),
         };
 
-        // Podmíné přidání group/task
+        // Pokud hodnota group existuje, vložím hodnotu group z requestu do objektu filter
         if (group !== undefined) updateFields.group = group;
+        // Pokud hodnota task existuje, vložím hodnotu group z requestu do objektu filter
         if (task !== undefined) updateFields.task = task;
-        //Updatetování poznámky
+        // načtení a aktualizování poznámky na základě id a hodnot objektu updateFields
         const updatedNote = await Note.findByIdAndUpdate(req.params.id, updateFields, { new: true });
-
+        // kontrola zda je aktualizovaná poznámka načtená
         if (!updatedNote) {
-            return res.status(404).json({ error: "Note not found" });
+            return res.status(404).json({ error: "Poznámka nenalezena" });
         }
-
+        //vracím odpověď s aktualizovanou poznámkou ve formátu json
         res.json(updatedNote);
     } catch (error) {
-        console.error("Chyba při aktualizaci poznámky:", error);
-        res.status(500).json({ error: "Something went wrong" });
+        //vracím neúspěšnou odpověď s kódem 500 se zprávou ve formátu json
+        res.status(500).json({ error: error.message || 'Něco se pokazilo' });
     }
 };
 
@@ -106,24 +110,26 @@ export const updateNote = async (req, res) => {
 // Odstranění poznámky
 export const deleteNote = async (req, res) => {
     try {
-        // Kontrola oprávnění k poznámkovému modulu
+        // Kontrola zda má uživatel oprávnění používat modul poznámek
         if (!req.user.permissions?.notes) {
+            // vrácení neúspěšné odpovědi s kódem 403 se zprávou
             return res.status(403).json({ message: "Nemáte oprávnění mazat poznámku" });
         }
-        // Kontrola id poznámky
+        // Kontrola správného formátu id poznámky
         if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
-            return res.status(400).json({ error: 'Invalid note ID' });
+            return res.status(400).json({ error: 'Nesprávný formát ID' });
         }
-        // odstranění poznámky
+        // načtení a odstranění poznámky na základě id poznámky
         const deletedNote = await Note.findByIdAndDelete(req.params.id);
-
+        // kontrola zda je odstraněná poznámka načtená
         if (!deletedNote) {
-            return res.status(404).json({ error: 'Note not found' });
+            return res.status(404).json({ error: 'Poznámka nenalezena' });
         }
-
+        //vracím odpověď se zprávou že byla poznámka odstraněna
         res.json({ message: 'Note deleted' });
     } catch (error) {
-        res.status(500).json({ error: 'Something went wrong' });
+        //vracím neúspěšnou odpověď s kódem 500 se zprávou ve formátu json
+        res.status(500).json({ error: error.message || 'Něco se pokazilo' });
     }
 };
 

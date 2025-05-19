@@ -23,7 +23,7 @@ function Sidebar() {
           {!collapsed && <span>Domů</span>}
         </Link>
 
-        {/* ✅ Skryjeme To-Do List, pokud uživatel nemá oprávnění */}
+        {/* Skrytí modulu úkolů, pokud uživatel nemá oprávnění */}
         {userPermissions?.todo && (
           <Link to="/todo" className="menu-item">
             <FaTasks />
@@ -32,7 +32,7 @@ function Sidebar() {
         )}
 
 
-        {/* ✅ Skryjeme poznámky, pokud uživatel nemá oprávnění */}
+        {/* Skrytí modulu poznámky, pokud uživatel nemá oprávnění */}
         {userPermissions?.notes && (
           <Link to="/notes" className="menu-item">
             <FaTasks />
@@ -40,7 +40,7 @@ function Sidebar() {
           </Link>
         )}
 
-        {/* ✅ Zobrazíme AdminPanel pouze pro superadmina */}
+        {/* Zobrazení admin modulu pouze pro superadmina */}
         {userRole === "superadmin" && (
           <Link to="/admin" className="menu-item">
             <FaUserShield />

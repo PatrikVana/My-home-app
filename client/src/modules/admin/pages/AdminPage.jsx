@@ -12,7 +12,7 @@ import {
   updateUserRole,
   updateUserAccess,
 } from "../../../store/admin/adminSlice";
-import { addNotification } from "../../../store/notifications/notificationsSlice"; // ✅ import notifikací
+import { addNotification } from "../../../store/notifications/notificationsSlice"; 
 
 const AdminPanel = () => {
   const dispatch = useDispatch();

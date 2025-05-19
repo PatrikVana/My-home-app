@@ -40,9 +40,9 @@ const UserEditModal = ({ user, closeModal, updateRole, updateAccess }) => {
         changed = true;
       }
 
-      closeModal(); // Můžeš přidat notifikaci podle potřeby
+      closeModal(); 
     } catch (error) {
-      console.error("❌ Chyba při ukládání změn:", error);
+      console.error("Chyba při ukládání změn:", error);
     }
   };
 
